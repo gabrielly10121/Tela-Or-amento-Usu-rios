@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orçamento</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #cccccc;
+            background-color: #f9f9f9;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #888888;
+            color: #ffffff;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #666666;
+        }
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #888888;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <h1>Cadastro de Orçamentos</h1>
+  <div class="btn-group">
+    <button class="btn" onclick="showForm('fisica')">Pessoa Física</button>
+    <button class="btn" onclick="showForm('juridica')">Pessoa Jurídica</button>
+  </div>
+
+  <!-- Formulário para Pessoa Física -->
+  <form id="form-fisica" th:action="@{/orcamentos}" th:object="${orcamentoModel}" method="post" style="display:none;">
+    <h2>Orçamento - Pessoa Física</h2>
+    <div class="form-group">
+      <label for="nome">Nome do Comprador</label>
+      <input type="text" id="nome" th:field="*{nomeComprador}">
+    </div>
+    <div class="form-group">
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" th:field="*{cpf}">
+    </div>
+    <div class="form-group">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" th:field="*{endereco}">
+    </div>
+    <div class="form-group">
+      <label for="valor_orcamento">Valor do Orçamento</label>
+      <input type="number" id="valor_orcamento" th:field="*{valorOrcamento}">
+    </div>
+    <div class="form-group">
+      <label for="valor_icms">Valor ICMS</label>
+      <input type="number" id="valor_icms" th:field="*{valorICMS}">
+    </div>
+    <div class="form-group">
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" th:field="*{usuario.nomeUsuario}">
+    </div>
+    <div class="form-group">
+      <label for="atendente">Nome do Atendente</label>
+      <input type="text" id="atendente" th:field="*{atendente}">
+    </div>
+    <div class="form-group">
+      <label for="icmsEstados">Estado ICMS</label>
+      <select id="icmsEstados" th:field="*{icmsEstados}">
+        <option value="" disabled selected>Selecione o Estado</option>
+        <option th:each="estado : ${icmsEstados}" th:value="${estado}" th:text="${estado}"></option>
+      </select>
+    </div>
+    <div class="btn-group">
+      <button class="btn" type="submit">Enviar</button>
+    </div>
+  </form>
+
+  <!-- Formulário para Pessoa Jurídica -->
+  <form id="form-juridica" th:action="@{/orcamentos}" th:object="${orcamentoModel}" method="post" style="display:none;">
+    <h2>Orçamento - Pessoa Jurídica</h2>
+    <div class="form-group">
+      <label for="nome">Nome do Comprador</label>
+      <input type="text" id="nome" th:field="*{nomeComprador}">
+    </div>
+    <div class="form-group">
+      <label for="cnpj">CNPJ</label>
+      <input type="text" id="cnpj" th:field="*{cnpj}">
+    </div>
+    <div class="form-group">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" th:field="*{endereco}">
+    </div>
+    <div class="form-group">
+      <label for="valor_orcamento">Valor do Orçamento</label>
+      <input type="number" id="valor_orcamento" th:field="*{valorOrcamento}">
+    </div>
+    <div class="form-group">
+      <label for="valor_icms">Valor ICMS</label>
+      <input type="number" id="valor_icms" th:field="*{valorICMS}">
+    </div>
+    <div class="form-group">
+      <label for="usuario">Usuário</label>
+      <input type="text" id="usuario" th:field="*{usuario.nomeUsuario}">
+    </div>
+    <div class="form-group">
+      <label for="atendente">Nome do Atendente</label>
+      <input type="text" id="atendente" th:field="*{atendente}">
+    </div>
+    <div class="form-group">
+      <label for="icmsEstados">Estado ICMS</label>
+      <select id="icmsEstados" th:field="*{icmsEstados}">
+        <option value="" disabled selected>Selecione o Estado</option>
+        <option th:each="estado : ${icmsEstados}" th:value="${estado}" th:text="${estado}"></option>
+      </select>
+    </div>
+    <div class="btn-group">
+      <button class="btn" type="submit">Enviar</button>
+    </div>
+  </form>
+
+  <!-- Tabela de Orçamentos -->
+  <h2>Orçamentos Cadastrados</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome do Comprador</th>
+      <th>CPF/CNPJ</th>
+      <th>Endereço</th>
+      <th>Valor do Orçamento</th>
+      <th>Valor ICMS</th>
+      <th>Usuário</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="orcamento : ${orcamentos}">
+      <td th:text="${orcamento.id}"></td>
+      <td th:text="${orcamento.nomeComprador}"></td>
+      <td th:text="${orcamento.cpf != null ? orcamento.cpf : orcamento.cnpj}"></td>
+      <td th:text="${orcamento.endereco}"></td>
+      <td th:text="${orcamento.valorOrcamento}"></td>
+      <td th:text="${orcamento.valorICMS}"></td>
+      <td th:text="${orcamento.usuario.nomeUsuario}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+    function showForm(type) {
+        document.getElementById('form-fisica').style.display = type === 'fisica' ? 'block' : 'none';
+        document.getElementById('form-juridica').style.display = type === 'juridica' ? 'block' : 'none';
+    }
+</script>
+</body>
+</html>
